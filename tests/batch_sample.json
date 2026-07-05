@@ -1,0 +1,10 @@
+{
+  "batch_guidelines": "Format the output as a clean philosophical essay.",
+  "queries": [
+    {
+      "query": "זמן הרמבם",
+      "question_guidelines": "Be extremely brief. Do not mention Aristotle.",
+      "word_budget": 15
+    }
+  ]
+}

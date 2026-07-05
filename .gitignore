@@ -1,0 +1,37 @@
+# Secrets & Configuration
+.env
+.streamlit/secrets.toml
+
+# Virtual Environments & Python Caches
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Data & Generated Artifacts
+# We ignore data directories because PDFs and vector DBs are large and environment-specific.
+data/raw/
+data/processed/
+data/vector_store/
+data/source_pdfs/
+data/questions_pdfs/
+data/derived/
+
+# We ignore all PDFs to prevent accidental commits of proprietary text
+*.pdf
+
+# SQLite / Database files
+*.db
+*.sqlite3
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs & Temporary files
+*.log
+scratch/
+.temp/
