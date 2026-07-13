@@ -371,11 +371,17 @@ if not st.session_state.startup_done:
 # --- Sidebar: Config & Backend ---
 with st.sidebar:
     st.header("⚙️ הגדרות")
-    backend_choice = st.selectbox("בחירת מודל שפה (Backend)", ["dicta", "gemini", "auto"])
+    backend_choice = st.selectbox("בחירת מודל שפה (Backend)", ["auto", "openai", "dicta", "gemini"])
     os.environ["LLM_BACKEND_STRATEGY"] = backend_choice
     
     st.subheader("מפתחות API")
-    gemini_key = st.text_input("מפתח API של Gemini", type="password")
+    openai_key = st.text_input("מפתח API של OpenAI (ראשי)", type="password")
+    if openai_key:
+        os.environ["OPENAI_API_KEY"] = openai_key
+    elif "OPENAI_API_KEY" in os.environ:
+        del os.environ["OPENAI_API_KEY"]
+        
+    gemini_key = st.text_input("מפתח API של Gemini (גיבוי)", type="password")
     if gemini_key:
         os.environ["GEMINI_API_KEY"] = gemini_key
     elif "GEMINI_API_KEY" in os.environ:
@@ -454,6 +460,8 @@ with tab2:
     if st.button("בצע שאילתה"):
         if backend_choice == "gemini" and not gemini_key:
             st.error("🚨 חסר מפתח API של Gemini! אנא הזן אותו בסרגל הצד.")
+        elif backend_choice == "openai" and not openai_key:
+            st.error("🚨 חסר מפתח API של OpenAI! אנא הזן אותו בסרגל הצד.")
         else:
             with st.spinner("מאחזר ומסכם..."):
                 try:
@@ -667,6 +675,8 @@ with tab3:
                 if st.button("בצע שאילתת השוואה"):
                     if backend_choice == "gemini" and not gemini_key:
                         st.error("🚨 חסר מפתח API של Gemini! אנא הזן אותו בסרגל הצד.")
+                    elif backend_choice == "openai" and not openai_key:
+                        st.error("🚨 חסר מפתח API של OpenAI! אנא הזן אותו בסרגל הצד.")
                     else:
                         primary_chunks = []
                         reference_chunks = []
@@ -849,6 +859,8 @@ with tab3:
                     if st.button("הפעל אצווה"):
                         if backend_choice == "gemini" and not gemini_key:
                             st.error("🚨 חסר מפתח API של Gemini! אנא הזן אותו בסרגל הצד.")
+                        elif backend_choice == "openai" and not openai_key:
+                            st.error("🚨 חסר מפתח API של OpenAI! אנא הזן אותו בסרגל הצד.")
                         else:
                             reference_searcher = None
                             if comp_strategy in ["השוואה למאגר הרקע המקורי", "גם מאמר חדש וגם מאגר הרקע המקורי"]:
