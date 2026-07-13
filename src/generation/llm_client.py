@@ -116,6 +116,7 @@ class GeminiLLMClient(BaseLLMClient):
     def _validate_model(self):
         try:
             from google import genai
+            from google.genai import types
             client = genai.Client(api_key=self.api_key)
             
             supported_names = []
@@ -123,34 +124,71 @@ class GeminiLLMClient(BaseLLMClient):
             for m in client.models.list():
                 clean_name = m.name.replace("models/", "").lower()
                 methods = getattr(m, "supported_generation_methods", [])
-                if "generateContent" in methods:
-                    supported_names.append(clean_name)
+                
+                # Exclude models lacking generation, old legacy models, and specialized non-text variants
+                if "generateContent" not in methods:
+                    continue
+                if "1.0" in clean_name or "vision" in clean_name or "embedding" in clean_name or "aqa" in clean_name:
+                    continue
                     
-            if not supported_names:
-                supported_names = [m.name.replace("models/", "").lower() for m in client.models.list()]
+                supported_names.append(clean_name)
                 
-            # Dynamic auto-selection if no explicit env override was provided
-            if not self.env_model_name and supported_names:
-                priority_list = [
-                    "gemini-3.5-flash",
-                    "gemini-3.5-pro-latest",
-                    "gemini-2.5-flash",
-                    "gemini-2.0-flash",
-                    "gemini-1.5-pro-latest",
-                    "gemini-1.5-flash-latest",
-                    "gemini-1.5-pro",
-                    "gemini-1.5-flash",
-                    "gemini-1.0-pro"
-                ]
-                selected = next((p for p in priority_list if p in supported_names), None)
-                self.model_name = selected if selected else supported_names[0]
+            # Heuristic scoring to prefer newer, higher-tier text models
+            def model_score(name):
+                score = 0
+                if "gemini-3" in name: score += 3000
+                elif "gemini-2.5" in name: score += 2000
+                elif "gemini-2.0" in name: score += 1000
+                elif "gemini-1.5" in name: score += 500
                 
-            clean_configured_name = self.model_name.replace("models/", "").lower()
+                if "pro" in name: score += 100
+                elif "flash" in name: score += 50
+                
+                if "latest" in name: score += 10
+                elif "exp" in name: score -= 50
+                return score
+                
+            supported_names.sort(key=model_score, reverse=True)
             
-            if clean_configured_name not in supported_names:
-                top_choices = ", ".join([n for n in supported_names if "pro" in n or "flash" in n][:5])
-                self.validation_error = f"Configured model '{self.model_name}' is not found or unsupported. Please set GEMINI_MODEL_NAME. Supported fallbacks: {top_choices}."
+            candidates = []
+            if self.env_model_name:
+                candidates.append(self.env_model_name.replace("models/", "").lower())
+            candidates.extend(supported_names)
+            
+            # Remove duplicates preserving order
+            seen = set()
+            candidates = [x for x in candidates if not (x in seen or seen.add(x))]
+            
+            print(f"[INFO] Gemini probing candidates (Top 5): {candidates[:5]}...")
+            
+            working_model = None
+            probe_prompt = "Output JSON matching schema: {}\n\nReturn empty JSON: {}"
+            
+            # Active Capability Probe
+            for candidate in candidates:
+                try:
+                    response = client.models.generate_content(
+                        model=candidate,
+                        contents=probe_prompt,
+                        config=types.GenerateContentConfig(
+                            response_mime_type="application/json",
+                            temperature=0.0,
+                            max_output_tokens=10
+                        )
+                    )
+                    working_model = candidate
+                    print(f"[INFO] Successfully probed and selected: {working_model}")
+                    break
+                except Exception as e:
+                    print(f"[WARNING] Candidate {candidate} rejected during probe: {str(e)}")
+                    continue
+                    
+            if not working_model:
+                self.validation_error = "No supported Gemini models passed the capability probe (tested JSON mode support & permissions)."
+                return
                 
+            self.model_name = working_model
+            
         except Exception as e:
             self.validation_error = f"Gemini startup validation failed: {str(e)}"
             
