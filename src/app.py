@@ -120,10 +120,9 @@ div[data-testid="stSelectbox"] label,
 div[data-testid="stTextArea"] label, 
 div[data-testid="stNumberInput"] label,
 div[data-testid="stFileUploader"] label {
-    display: flex;
-    justify-content: right;
-    direction: rtl;
-    text-align: right;
+    direction: rtl !important;
+    text-align: right !important;
+    /* Removed display: flex and justify-content which break React Suspense dynamic module fetching */
 }
 
 /* Input fields (text box, area) */
@@ -218,7 +217,13 @@ div[data-testid="stDataFrame"], div[data-testid="stDataEditor"] {
 }
 </style>
 """
-st.markdown(RTL_STYLE, unsafe_allow_html=True)
+
+# Use st.html if available (Streamlit >= 1.35) to prevent markdown parser leaking raw tags.
+# Fallback to markdown wrapped in a zero-height container.
+if hasattr(st, "html"):
+    st.html(RTL_STYLE)
+else:
+    st.markdown(f"<div>{RTL_STYLE}</div>", unsafe_allow_html=True)
 
 
 # Initialize Session State
