@@ -253,11 +253,50 @@ class GeminiLLMClient(BaseLLMClient):
                 print(f"[WARNING] Gemini transient error ({'503' if is_503 else '429'}). Retrying in {delay:.1f}s (Attempt {attempt+1}/{max_attempts})...")
                 time.sleep(delay)
 
+class OpenAILLMClient(BaseLLMClient):
+    def __init__(self):
+        super().__init__()
+        self.model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4o-mini")
+        self.api_key = os.getenv("OPENAI_API_KEY")
+        
+    def generate_json(self, prompt, schema_description=""):
+        if not self.api_key:
+            return {"error": "Missing OPENAI_API_KEY in environment."}
+            
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=self.api_key)
+            
+            system_instruction = "You are a helpful assistant. You must output valid JSON."
+            full_prompt = f"Output JSON matching schema: {schema_description}\n\n{prompt}"
+            
+            response = client.chat.completions.create(
+                model=self.model_name,
+                messages=[
+                    {"role": "system", "content": system_instruction},
+                    {"role": "user", "content": full_prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.0
+            )
+            
+            return json.loads(response.choices[0].message.content)
+            
+        except ImportError:
+            return {"error": "OpenAI library not installed. Please install it using `pip install openai`."}
+        except Exception as e:
+            e_str = str(e).lower()
+            if "401" in e_str or "unauthorized" in e_str or "key" in e_str:
+                return {"error": f"שגיאת הרשאה מול OpenAI. יתכן שהטוקן שגוי (401). פירוט: {str(e)}"}
+            elif "429" in e_str or "quota" in e_str:
+                return {"error": f"חריגה ממגבלת הבקשות של OpenAI (429). אנא נסה שוב מאוחר יותר. פירוט: {str(e)}"}
+            return {"error": f"שגיאה בהפקת תשובה מ-OpenAI: {str(e)}"}
+
 class LLMClientFactory:
     @staticmethod
     def get_client(strategy=None):
         if not strategy:
-            strategy = os.getenv("LLM_BACKEND_STRATEGY", "dicta").lower()
+            strategy = os.getenv("LLM_BACKEND_STRATEGY", "auto").lower()
             
         print(f"[INFO] Initializing LLM Backend Strategy: {strategy}")
         
@@ -265,12 +304,17 @@ class LLMClientFactory:
             return DictaLLMClient()
         elif strategy == "gemini":
             return GeminiLLMClient()
+        elif strategy == "openai":
+            return OpenAILLMClient()
         elif strategy == "auto":
-            if os.getenv("GEMINI_API_KEY"):
-                print("[INFO] GEMINI_API_KEY found. Defaulting to Gemini.")
+            if os.getenv("OPENAI_API_KEY"):
+                print("[INFO] OPENAI_API_KEY found. Defaulting to OpenAI.")
+                return OpenAILLMClient()
+            elif os.getenv("GEMINI_API_KEY"):
+                print("[INFO] GEMINI_API_KEY found. Defaulting to Gemini fallback.")
                 return GeminiLLMClient()
             else:
-                print("[INFO] No Gemini key found. Defaulting to Local DICTA Server.")
+                print("[INFO] No external keys found. Defaulting to Local DICTA Server.")
                 return DictaLLMClient()
         else:
             raise ValueError(f"Unsupported LLM backend strategy: {strategy}")
