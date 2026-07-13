@@ -6,19 +6,25 @@ import time
 from uuid import uuid4
 
 class HybridSearcher:
+    _client_cache = {}
+
     def __init__(self, registry_path, db_path):
         self.registry_path = registry_path
         self.db_path = db_path
         self.chunks = []
         self.bm25 = None
-        self.chroma_client = chromadb.PersistentClient(path=self.db_path)
+        
+        # Prevent RustBindingsAPI teardown bugs by caching the client per path
+        if self.db_path not in HybridSearcher._client_cache:
+            HybridSearcher._client_cache[self.db_path] = chromadb.PersistentClient(path=self.db_path)
+        self.chroma_client = HybridSearcher._client_cache[self.db_path]
         
         # Explicitly configure multilingual embedding model for mixed Hebrew/English retrieval
         from chromadb.utils import embedding_functions
         self.ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="paraphrase-multilingual-MiniLM-L12-v2")
         
         self.collection = self.chroma_client.get_or_create_collection(
-            name="philosophy_docs_multilingual", 
+            name="philosophy_docs_v2", 
             embedding_function=self.ef
         )
         
@@ -90,8 +96,14 @@ class HybridSearcher:
             results.append({
                 "rank": rank + 1,
                 "chunk_id": cid,
+                "article_id": chunk.get("article_id", "N/A"),
                 "article_title": chunk["article_title"],
                 "global_page_num": chunk["global_page_num"],
+                "local_page_num": chunk.get("local_page_num", 1),
+                "char_start": chunk.get("char_start", -1),
+                "char_end": chunk.get("char_end", -1),
+                "line_start": chunk.get("line_start", -1),
+                "line_end": chunk.get("line_end", -1),
                 "fused_rrf_score": fused_scores[cid],
                 "lexical_score": lexical_lookup.get(cid, 0.0),
                 "dense_distance": dense_lookup.get(cid, 999.0),
@@ -99,3 +111,18 @@ class HybridSearcher:
             })
             
         return results
+
+    def close(self):
+        """Release underlying file locks so databases can be safely deleted."""
+        if hasattr(self, 'chroma_client') and self.chroma_client is not None:
+            try:
+                self.chroma_client.close()
+                if hasattr(self.chroma_client, 'clear_system_cache'):
+                    self.chroma_client.clear_system_cache()
+            except Exception:
+                pass
+                
+            if self.db_path in HybridSearcher._client_cache:
+                del HybridSearcher._client_cache[self.db_path]
+                
+            self.chroma_client = None

@@ -1,0 +1,508 @@
+[
+  {
+    "id": "5fc957cd-83b6-4cf3-ae16-8b5d5d1f5720",
+    "timestamp": "2026-07-13 14:18:59",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318",
+    "strategy": "מאמר חדש בלבד",
+    "question": "מחבר המאמר מגן על עמדה הקרויה \"טוב טבעי\". מהי עמדה זו? כיצד היא מהווה ביטוי/פרשנות לתורת המידות הטובות בגרסתה האריסטוטלית/נאו-אריסטוטלית?",
+    "answer_data": {
+      "error": "Gemini generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.01639344262295082,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3542066216468811,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.016129032258064516,
+        "lexical_score": 0.0,
+        "dense_distance": 0.37447476387023926,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318_p8_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783941318",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 1515,
+        "char_end": 2639,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.015873015873015872,
+        "lexical_score": 0.0,
+        "dense_distance": 0.37933969497680664,
+        "text": ". On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals. If the analogy is to hold, the end which is \nserved by those functional features in plants and animals must be suffi\nciently similar to the human good, and for Foot that end is the relevant \nplant-good or animal-good, as defined by the characteristic life cycle of the \nspecies. If, however, the ultimate end served by the functional features of \nliving things is gene replication, then the analogy clearly does not work: \nany “norms” associated with biological teleology will ultimately tell us not \nwhat is required for the flourishing of the organism, but for success or fail\nure in the replication of genes. And the neo-Aristotelian certainly would \n19 Michael Thompson, “Three Degrees of Natural Goodness,” 5. This essay originally \nappeared as a discussion note in Iride (2003). Online edition available at: http://www.pitt\n.edu/~ mthompso/\n20 Fitzpatrick, Teleology and the Norms of Nature, 186. Italics in original."
+      }
+    ],
+    "reference_chunks": []
+  },
+  {
+    "id": "ab2a6496-b3b1-4ffc-b7d2-7d8400e61fc9",
+    "timestamp": "2026-07-13 13:50:48",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840",
+    "strategy": "מאמר חדש בלבד",
+    "question": "מחבר המאמר מגן על עמדה הקרויה \"טוב טבעי\". מהי עמדה זו? כיצד היא מהווה ביטוי או פרשנות לתורת המידות הטובות בגרסתה האריסטוטלית או הנאו-אריסטוטלית?",
+    "answer_data": {
+      "answers": [
+        {
+          "sub_question": "Error",
+          "answer": "Failed: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}",
+          "word_count": 0
+        }
+      ]
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.01639344262295082,
+        "lexical_score": 0.0,
+        "dense_distance": 0.36227643489837646,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.016129032258064516,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3771486282348633,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840_p15_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783939840",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 15,
+        "local_page_num": 15,
+        "char_start": 1683,
+        "char_end": 2795,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.015873015873015872,
+        "lexical_score": 0.0,
+        "dense_distance": 0.39738738536834717,
+        "text": ". But a flourishing-based \napproach to biological function, Fitzpatrick claims, fails to do precisely this \nin the case of specific features of living things. For a given part or behavior, \nthe neo-Aristotelian view is liable to misidentify its function as its contribu\ntion to the welfare of the individual or species, while in reality its function \nis something entirely different and its contribution to welfare is a “happy \naccident.”\n31 Foot has also argued (persuasively, to my mind) that the notion of a “good state of \naffairs” must be understood as a concept within morality: A “good state of affairs” makes \nsense in the context of what a virtuous person aims for – as an end related to a given virtue, \nsuch as benevolence – but not as something standing prior to morality which it is the busi\nness of morality to promote.\nSee Philippa Foot, “Morality, Action, and Outcome” and “Utilitarianism and the Virtues” \nin Moral Dilemmas (Oxford: Oxford University Press, 2002). These papers are a helpful back\nground for understanding Foot’s brief remarks about states of affairs in Natural Goodness, \n47-51."
+      }
+    ],
+    "reference_chunks": []
+  },
+  {
+    "id": "82d791d7-836b-465f-9918-b4623784a853",
+    "timestamp": "2026-07-13 13:35:10",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902",
+    "strategy": "מאמר חדש בלבד",
+    "question": "האם לוט מצליח להראות ש״טוב טבעי״ במובן הניאו־אריסטוטלי הוא באמת מושג נורמטיבי, או שהוא רק מתאר מה אופייני למין מסוים מבלי להסביר מדוע מאפיינים אלה צריכים להיחשב לטובים?",
+    "answer_data": {
+      "answers": [
+        {
+          "sub_question": "Error",
+          "answer": "Failed: 'ascii' codec can't encode characters in position 0-2: ordinal not in range(128)",
+          "word_count": 0
+        }
+      ]
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.01639344262295082,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3538832664489746,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902_p7_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 7,
+        "local_page_num": 7,
+        "char_start": 1703,
+        "char_end": 2666,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.016129032258064516,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3539615869522095,
+        "text": ". Even the barest sketch of human good makes clear that \nour characteristic life depends on the exercise of practical reason – how \ncould human beings form friendships, or raise their children, or stand in \nrelations of mutual respect, without acting for reasons? The excellent exer\ncise of practical reason, then, is something on which good hangs in human \nlife. As Foot says, “Natural goodness in reason following is as much a form \nof goodness in humans as is proper instinctive behaviour in animals.”18\nOne could accept this account of natural normativity, but reject the \nclaim that the traditional virtues characterize proper exercise of prac\ntical  reasoning in human beings. Neo-Aristotelians such as Foot hold \nthat “something like the traditional table of virtues provides an apt \n16 Ibid., 43.\n17 Ibid., 48.\n18 Philippa Foot, “Rationality and Goodness” in Modern Moral Philosophy ed. Anthony \nO’Hear (Cambridge: Cambridge University Press, 2004) 11-12."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938902",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.015873015873015872,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3635022044181824,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      }
+    ],
+    "reference_chunks": []
+  },
+  {
+    "id": "b4f96a53-9622-485f-b14c-1ad2af8961f3",
+    "timestamp": "2026-07-13 13:31:49",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704",
+    "strategy": "מאמר חדש בלבד",
+    "question": "האם לוט מצליח להראות ש״טוב טבעי״ במובן הניאו־אריסטוטלי הוא באמת מושג נורמטיבי, או שהוא רק מתאר מה אופייני למין מסוים מבלי להסביר מדוע מאפיינים אלה צריכים להיחשב לטובים?",
+    "answer_data": {
+      "answers": [
+        {
+          "sub_question": "Error",
+          "answer": "Failed: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}",
+          "word_count": 0
+        }
+      ]
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.01639344262295082,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3538832664489746,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704_p7_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 7,
+        "local_page_num": 7,
+        "char_start": 1703,
+        "char_end": 2666,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.016129032258064516,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3539615869522095,
+        "text": ". Even the barest sketch of human good makes clear that \nour characteristic life depends on the exercise of practical reason – how \ncould human beings form friendships, or raise their children, or stand in \nrelations of mutual respect, without acting for reasons? The excellent exer\ncise of practical reason, then, is something on which good hangs in human \nlife. As Foot says, “Natural goodness in reason following is as much a form \nof goodness in humans as is proper instinctive behaviour in animals.”18\nOne could accept this account of natural normativity, but reject the \nclaim that the traditional virtues characterize proper exercise of prac\ntical  reasoning in human beings. Neo-Aristotelians such as Foot hold \nthat “something like the traditional table of virtues provides an apt \n16 Ibid., 43.\n17 Ibid., 48.\n18 Philippa Foot, “Rationality and Goodness” in Modern Moral Philosophy ed. Anthony \nO’Hear (Cambridge: Cambridge University Press, 2004) 11-12."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938704",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.015873015873015872,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3635022044181824,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      }
+    ],
+    "reference_chunks": []
+  },
+  {
+    "id": "1bc40621-ab78-4bbb-aec7-6f7080e72691",
+    "timestamp": "2026-07-13 13:31:21",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672",
+    "strategy": "מאמר חדש בלבד",
+    "question": "האם לוט מצליח להראות ש״טוב טבעי״ במובן הניאו־אריסטוטלי הוא באמת מושג נורמטיבי, או שהוא רק מתאר מה אופייני למין מסוים מבלי להסביר מדוע מאפיינים אלה צריכים להיחשב לטובים?",
+    "answer_data": {
+      "answers": [
+        {
+          "sub_question": "Error",
+          "answer": "Failed: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}",
+          "word_count": 0
+        }
+      ]
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.01639344262295082,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3538832664489746,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672_p7_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 7,
+        "local_page_num": 7,
+        "char_start": 1703,
+        "char_end": 2666,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.016129032258064516,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3539615869522095,
+        "text": ". Even the barest sketch of human good makes clear that \nour characteristic life depends on the exercise of practical reason – how \ncould human beings form friendships, or raise their children, or stand in \nrelations of mutual respect, without acting for reasons? The excellent exer\ncise of practical reason, then, is something on which good hangs in human \nlife. As Foot says, “Natural goodness in reason following is as much a form \nof goodness in humans as is proper instinctive behaviour in animals.”18\nOne could accept this account of natural normativity, but reject the \nclaim that the traditional virtues characterize proper exercise of prac\ntical  reasoning in human beings. Neo-Aristotelians such as Foot hold \nthat “something like the traditional table of virtues provides an apt \n16 Ibid., 43.\n17 Ibid., 48.\n18 Philippa Foot, “Rationality and Goodness” in Modern Moral Philosophy ed. Anthony \nO’Hear (Cambridge: Cambridge University Press, 2004) 11-12."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783938672",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.015873015873015872,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3635022044181824,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      }
+    ],
+    "reference_chunks": []
+  },
+  {
+    "id": "61d3a2fc-fb54-4968-9774-aa94e296c997",
+    "timestamp": "2026-07-13 13:29:38",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959",
+    "strategy": "מאמר חדש בלבד",
+    "question": "האם לוט מצליח להראות ש״טוב טבעי״ במובן הניאו־אריסטוטלי הוא באמת מושג נורמטיבי, או שהוא רק מתאר מה אופייני למין מסוים מבלי להסביר מדוע מאפיינים אלה צריכים להיחשב לטובים?",
+    "answer_data": {
+      "error": "DICTA request timed out definitively after 2 attempts (300s each). The local server is likely overloaded or hanging."
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.01639344262295082,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3538832664489746,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959_p7_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 7,
+        "local_page_num": 7,
+        "char_start": 1703,
+        "char_end": 2666,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.016129032258064516,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3539615869522095,
+        "text": ". Even the barest sketch of human good makes clear that \nour characteristic life depends on the exercise of practical reason – how \ncould human beings form friendships, or raise their children, or stand in \nrelations of mutual respect, without acting for reasons? The excellent exer\ncise of practical reason, then, is something on which good hangs in human \nlife. As Foot says, “Natural goodness in reason following is as much a form \nof goodness in humans as is proper instinctive behaviour in animals.”18\nOne could accept this account of natural normativity, but reject the \nclaim that the traditional virtues characterize proper exercise of prac\ntical  reasoning in human beings. Neo-Aristotelians such as Foot hold \nthat “something like the traditional table of virtues provides an apt \n16 Ibid., 43.\n17 Ibid., 48.\n18 Philippa Foot, “Rationality and Goodness” in Modern Moral Philosophy ed. Anthony \nO’Hear (Cambridge: Cambridge University Press, 2004) 11-12."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937959",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.015873015873015872,
+        "lexical_score": 0.0,
+        "dense_distance": 0.3635022044181824,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      }
+    ],
+    "reference_chunks": []
+  },
+  {
+    "id": "4cb25be5-0593-463b-adfe-0484fde2d1ec",
+    "timestamp": "2026-07-13 13:14:46",
+    "main_article": "Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257",
+    "strategy": "מאמר חדש בלבד",
+    "question": "Does Lott successfully show that neo-Aristotelian “natural goodness” is genuinely normative, or does he merely describe what is characteristic of a species without explaining why those characteristics should count as good?",
+    "answer_data": {
+      "answers": [
+        {
+          "sub_question": "Answer (Auto-Repaired)",
+          "answer": "Lott successfully shows that neo-Aristotelian \"natural goodness\" is genuinely normative. [CHUNK_ID: art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257_p22_c1] Citations: [ { \"chunk_id\": \"art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257_p22_c1\", \"snippet\": \"something does play the part we attribute...",
+          "citations": []
+        }
+      ]
+    },
+    "is_deterministic": false,
+    "primary_chunks": [
+      {
+        "chunk_id": "metadata_header",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": "Metadata",
+        "text": "DOCUMENT IDENTITY METADATA:\\nFilename: Lott - Elephant Seals and Natural Goodness (1).pdf\\nAuthor: Lott\\nTitle: Elephant Seals and Natural Goodness (1).pdf\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
+      },
+      {
+        "rank": 1,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257_p22_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 22,
+        "local_page_num": 22,
+        "char_start": 0,
+        "char_end": 1487,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.03131881575727918,
+        "lexical_score": 15.338272854657005,
+        "dense_distance": 0.3640892505645752,
+        "text": "374\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\nsomething does play the part we attribute to it is a factual question, and we \ncan gain new insight into the function of a trait by observation. So we dis\ncover true Aristotelian categoricals through familiar methods of empirical \nresearch, and there is no vicious circularity to such judgments.\n3.3. Can we do without Life Forms and Natural Norms?\nI have argued that, contrary to what Fitzpatrick claims, the neo-Aristote\nlian account of natural normativity is not undermined by evolutionary \naccounts of how species have arisen. However, this might suggest that \nwhile natural norms are “safe” from the results of evolutionary biology, they \nare unnecessary to our understanding of living things. Even if Thompson-\nFoot life form judgments are not refuted by evolutionary accounts, might \nnot we dispense with them once we have an acceptable evolutionary story?\nNo. The reason for this is that we must employ some conception of life \nform whenever we represent an individual as living. In order to see any\nthing as an organism, we must understand some of its happenings as vital \nprocesses and some of its parts as organs or members of the organism. And \nin order to grasp what vital processes are happening and what organs are \npresent, we must appeal to the “wider context” of the life form. To see why \nthis is so, consider the fact that what counts as eating, breathing, hunting, \netc. varies from life form to life form"
+      },
+      {
+        "rank": 2,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257_p7_c2",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 7,
+        "local_page_num": 7,
+        "char_start": 1703,
+        "char_end": 2666,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.02921395544346364,
+        "lexical_score": 19.900621521920918,
+        "dense_distance": 0.4895358085632324,
+        "text": ". Even the barest sketch of human good makes clear that \nour characteristic life depends on the exercise of practical reason – how \ncould human beings form friendships, or raise their children, or stand in \nrelations of mutual respect, without acting for reasons? The excellent exer\ncise of practical reason, then, is something on which good hangs in human \nlife. As Foot says, “Natural goodness in reason following is as much a form \nof goodness in humans as is proper instinctive behaviour in animals.”18\nOne could accept this account of natural normativity, but reject the \nclaim that the traditional virtues characterize proper exercise of prac\ntical  reasoning in human beings. Neo-Aristotelians such as Foot hold \nthat “something like the traditional table of virtues provides an apt \n16 Ibid., 43.\n17 Ibid., 48.\n18 Philippa Foot, “Rationality and Goodness” in Modern Moral Philosophy ed. Anthony \nO’Hear (Cambridge: Cambridge University Press, 2004) 11-12."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "art_new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257_p8_c1",
+        "article_id": "new_Lott___Elephant_Seals_and_Natural_Goodness__1__pdf_1783937257",
+        "article_title": "Lott - Elephant Seals and Natural Goodness (1).pdf",
+        "global_page_num": 8,
+        "local_page_num": 8,
+        "char_start": 0,
+        "char_end": 1714,
+        "line_start": 1,
+        "line_end": 1,
+        "fused_rrf_score": 0.02878726010616578,
+        "lexical_score": 13.077828972065918,
+        "dense_distance": 0.39302772283554077,
+        "text": "360\t\nM. Lott / Journal of Moral Philosophy 9 (2012) 353–375\t\ncharacterization of the specifically human form of practical rationality.”19 \nHowever, there can be many competing substantive accounts of human \ngood and practical excellence, each of which accepts the framework of \nnatural normativity. Fitzpatrick lodges his objection at a level that applies \nto all such accounts. Indeed, he argues that neo-Aristotelian teleology fails \nas an account of living things, even before we move to the specifically \nhuman case.\n3. Evolution, Flourishing, and Biological Teleology\nFitzpatrick regards the neo-Aristotelian view as a “welfare-based” account \nof biological teleology, and he argues that welfare-based views are false. \nWhat actually determines function in living things is not the flourishing of \nthe organism (either the individual or the species), but the end of gene rep\nlication. The lesson of evolutionary biology, Fitzpatrick argues, is that \n“organisms must generally be understood ultimately as complex gene rep\nlicating systems –functional systems that have as their general and ulti\nmate biological end the replication of certain germ-line copies of the genes \nrepresented in their co-adapted genomes in the next generation, with lower \nlevel functions and ends all geared toward this end.”20\nFitzpatrick is right to suppose that if the only kind of function in living \nthings is that defined by gene replication, then the attempt to see moral \ngoodness as a kind of natural goodness is unsuccessful. On a view like \nFoot’s, the moral virtues are traits necessary for realizing human good, and \nthere is an analogy between moral virtue in humans and species-specific \ngoodness in plants and animals"
+      }
+    ],
+    "reference_chunks": []
+  }
+]

@@ -22,16 +22,28 @@ class ChunkRegistryBuilder:
     def build_registry(self):
         print(f"Reading metadata from {self.metadata_path}")
         with open(self.metadata_path, 'r', encoding='utf-8') as f:
-            articles = json.load(f)
+            data = json.load(f)
+            
+        articles = data.get("manifest", data) if isinstance(data, dict) else data
             
         chunks = []
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        split_pdfs_dir = os.path.join(base_dir, "data", "processed", "split_pdfs")
+        source_pdf_path = os.path.join(base_dir, "data", "raw", "main.pdf")
         
         for art in articles:
-            pdf_path = art["split_pdf_path"]
+            filename = art.get("filename") or art.get("output_pdf_filename")
+            if not filename:
+                continue
+                
+            pdf_path = os.path.join(split_pdfs_dir, filename)
             if not os.path.exists(pdf_path):
                 print(f"Warning: {pdf_path} not found. Skipping.")
                 continue
                 
+            title = art.get("title") or art.get("cleaned_title") or f"Article {art.get('article_number')}"
+            start_page = art.get("start_page") if art.get("start_page") is not None else art.get("proposed_start_page")
+            
             doc = fitz.open(pdf_path)
             for local_page_num in range(len(doc)):
                 page = doc.load_page(local_page_num)
@@ -47,20 +59,30 @@ class ChunkRegistryBuilder:
                 # Split into chunks
                 page_chunks = self.text_splitter.split_text(reordered_text)
                 
-                global_page_num = art["start_page"] + local_page_num
+                global_page_num = start_page + local_page_num if start_page is not None else local_page_num + 1
                 
                 for i, text_chunk in enumerate(page_chunks):
                     if not text_chunk.strip(): continue
-                    chunk_id = f"{art['article_id']}_p{global_page_num}_c{i+1}"
+                    chunk_id = f"art_{art.get('article_number')}_p{global_page_num}_c{i+1}"
+                    
+                    # Extract provenance character/line bounds
+                    char_start = reordered_text.find(text_chunk)
+                    char_end = char_start + len(text_chunk) if char_start != -1 else -1
+                    line_start = reordered_text.count('\\n', 0, char_start) + 1 if char_start != -1 else -1
+                    line_end = reordered_text.count('\\n', 0, char_end) + 1 if char_end != -1 else -1
                     
                     chunks.append({
                         "chunk_id": chunk_id,
-                        "article_id": art["article_id"],
-                        "article_title": art["title"],
+                        "article_id": str(art.get("article_number")),
+                        "article_title": title,
                         "split_pdf_path": pdf_path,
-                        "source_pdf_path": art["source_pdf"],
+                        "source_pdf_path": source_pdf_path,
                         "global_page_num": global_page_num,
                         "local_page_num": local_page_num + 1,
+                        "char_start": char_start,
+                        "char_end": char_end,
+                        "line_start": line_start,
+                        "line_end": line_end,
                         "text": text_chunk
                     })
             doc.close()
@@ -76,7 +98,7 @@ class ChunkRegistryBuilder:
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    meta_path = os.path.join(base_dir, "data", "processed", "split_pdfs", "articles_metadata.json")
+    meta_path = os.path.join(base_dir, "data", "processed", "split_pdfs", "articles_manifest.json")
     out_path = os.path.join(base_dir, "data", "processed", "chunks_registry.jsonl")
     builder = ChunkRegistryBuilder(meta_path, out_path)
     builder.build_registry()
