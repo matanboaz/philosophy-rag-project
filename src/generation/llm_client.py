@@ -137,7 +137,10 @@ class GeminiLLMClient(BaseLLMClient):
                     "gemini-2.5-flash",
                     "gemini-2.0-flash",
                     "gemini-1.5-pro-latest",
-                    "gemini-1.5-flash-latest"
+                    "gemini-1.5-flash-latest",
+                    "gemini-1.5-pro",
+                    "gemini-1.5-flash",
+                    "gemini-1.0-pro"
                 ]
                 selected = next((p for p in priority_list if p in supported_names), None)
                 self.model_name = selected if selected else supported_names[0]
@@ -164,7 +167,7 @@ class GeminiLLMClient(BaseLLMClient):
         from google.genai import types
         
         client = genai.Client(api_key=self.api_key)
-        full_prompt = f"Output JSON matching schema: {schema_description}\\n\\n{prompt}"
+        full_prompt = f"Output JSON matching schema: {schema_description}\n\n{prompt}"
         
         max_attempts = 4
         base_delay = 2.0
@@ -193,9 +196,9 @@ class GeminiLLMClient(BaseLLMClient):
                         return {"error": "חריגה ממגבלת הבקשות של Gemini (429). אנא נסה שוב מאוחר יותר."}
                     
                     if "400" in e_str or "403" in e_str or "404" in e_str:
-                        return {"error": "שגיאת הרשאה או בקשה לא תקינה מול Gemini (4xx). יתכן שהמודל לא נתמך או שהטוקן פג תוקף."}
+                        return {"error": f"שגיאת הרשאה או בקשה לא תקינה מול Gemini (4xx). יתכן שהמודל לא נתמך במצב JSON או שהטוקן פג תוקף. פירוט שגיאה: {e_str}"}
                         
-                    return {"error": "שגיאה כללית בהפקת תשובה מ-Gemini."}
+                    return {"error": f"שגיאה כללית בהפקת תשובה מ-Gemini: {e_str}"}
                     
                 # Exponential backoff with jitter
                 delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
