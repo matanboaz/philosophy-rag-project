@@ -803,76 +803,76 @@ with tab3:
                         try:
                             primary_chunks = st.session_state.primary_searcher.search(comp_query, top_k=3, status_callback=cb)
                                 
-                                # --- BUG 2 FIX: METADATA INJECTION FOR IDENTITY QUESTIONS ---
-                                deterministic_ans = None
-                                if primary_chunks:
-                                    meta_title = primary_chunks[0].get("article_title", "Unknown")
-                                    author_cue = meta_title.split('-')[0].strip() if '-' in meta_title else "לא ידוע"
-                                    title_cue = meta_title.split('-')[1].strip() if '-' in meta_title else meta_title
-                                    
-                                    meta_chunk = {
-                                        "chunk_id": "metadata_header",
-                                        "article_title": meta_title,
-                                        "global_page_num": "Metadata",
-                                        "text": f"DOCUMENT IDENTITY METADATA:\\nFilename: {meta_title}\\nAuthor: {author_cue}\\nTitle: {title_cue}\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
-                                    }
-                                    primary_chunks.insert(0, meta_chunk)
-                                    
-                                    # Short-circuit logic for pure identity questions
-                                    id_keywords = ["מה שם מחבר", "מי המחבר", "מי כתב", "מה כותרת המאמר", "שם המאמר"]
-                                    if any(k in comp_query for k in id_keywords) and len(comp_query.split()) <= 10:
-                                        deterministic_ans = f"מחבר המאמר הוא {author_cue} ושם המאמר הוא {title_cue}."
-                                        
-                                if comp_strategy in ["השוואה למאגר הרקע המקורי", "גם מאמר חדש וגם מאגר הרקע המקורי"]:
-                                    reference_chunks = st.session_state.searcher.search(comp_query, top_k=3, status_callback=cb)
-                                    
-                                pipeline = QAPipeline(backend_strategy=backend_choice)
-                                guidelines_map = {"corpus": corpus_guide, "batch": batch_guide, "question": comp_guide}
+                            # --- BUG 2 FIX: METADATA INJECTION FOR IDENTITY QUESTIONS ---
+                            deterministic_ans = None
+                            if primary_chunks:
+                                meta_title = primary_chunks[0].get("article_title", "Unknown")
+                                author_cue = meta_title.split('-')[0].strip() if '-' in meta_title else "לא ידוע"
+                                title_cue = meta_title.split('-')[1].strip() if '-' in meta_title else meta_title
                                 
-                                # Removed ASCII-crashing debug prints that attempted to log Hebrew strategy strings
-                                
-                                if deterministic_ans and comp_strategy == "מאמר חדש בלבד":
-                                    result = {
-                                        "warnings": [],
-                                        "final_parsed_answer": {
-                                            "answers": [{
-                                                "sub_question": comp_query,
-                                                "answer": deterministic_ans,
-                                                "citations": [{"chunk_id": "metadata_header", "snippet": meta_title}]
-                                            }]
-                                        }
-                                    }
-                                elif comp_strategy == "מאמר חדש בלבד":
-                                    result = pipeline.execute_qa(comp_query, primary_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, status_callback=cb)
-                                else:
-                                    mode_flag = "combine" if comp_strategy == "גם מאמר חדש וגם מאגר הרקע המקורי" else "compare"
-                                    result = pipeline.execute_comparison_qa(comp_query, primary_chunks, reference_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, mode=mode_flag, status_callback=cb)
-                                
-                                cb("Completed", "Comparison generation finished.", 100, state="completed")
-                                
-                                st.session_state.tab3_answer_state = {
-                                    "warnings": result.get("warnings", []),
-                                    "ans_data": result.get("final_parsed_answer", {}),
-                                    "primary_chunks": primary_chunks,
-                                    "reference_chunks": reference_chunks,
-                                    "comp_strategy": comp_strategy
+                                meta_chunk = {
+                                    "chunk_id": "metadata_header",
+                                    "article_title": meta_title,
+                                    "global_page_num": "Metadata",
+                                    "text": f"DOCUMENT IDENTITY METADATA:\\nFilename: {meta_title}\\nAuthor: {author_cue}\\nTitle: {title_cue}\\nCRITICAL INSTRUCTION: If asked for author or title, you MUST use these exact extracted values. DO NOT say there is insufficient information."
                                 }
+                                primary_chunks.insert(0, meta_chunk)
                                 
-                                # Capture History
-                                new_entry = {
-                                    "id": str(uuid.uuid4()),
-                                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                    "main_article": selected_article,
-                                    "strategy": comp_strategy,
-                                    "question": comp_query,
-                                    "answer_data": result.get("final_parsed_answer", {}),
-                                    "is_deterministic": bool(deterministic_ans),
-                                    "primary_chunks": primary_chunks,
-                                    "reference_chunks": reference_chunks
+                                # Short-circuit logic for pure identity questions
+                                id_keywords = ["מה שם מחבר", "מי המחבר", "מי כתב", "מה כותרת המאמר", "שם המאמר"]
+                                if any(k in comp_query for k in id_keywords) and len(comp_query.split()) <= 10:
+                                    deterministic_ans = f"מחבר המאמר הוא {author_cue} ושם המאמר הוא {title_cue}."
+                                    
+                            if comp_strategy in ["השוואה למאגר הרקע המקורי", "גם מאמר חדש וגם מאגר הרקע המקורי"]:
+                                reference_chunks = st.session_state.searcher.search(comp_query, top_k=3, status_callback=cb)
+                                
+                            pipeline = QAPipeline(backend_strategy=backend_choice)
+                            guidelines_map = {"corpus": corpus_guide, "batch": batch_guide, "question": comp_guide}
+                            
+                            # Removed ASCII-crashing debug prints that attempted to log Hebrew strategy strings
+                            
+                            if deterministic_ans and comp_strategy == "מאמר חדש בלבד":
+                                result = {
+                                    "warnings": [],
+                                    "final_parsed_answer": {
+                                        "answers": [{
+                                            "sub_question": comp_query,
+                                            "answer": deterministic_ans,
+                                            "citations": [{"chunk_id": "metadata_header", "snippet": meta_title}]
+                                        }]
+                                    }
                                 }
-                                st.session_state.tab3_history.insert(0, new_entry)
-                                save_history(st.session_state.tab3_history)
-                                
+                            elif comp_strategy == "מאמר חדש בלבד":
+                                result = pipeline.execute_qa(comp_query, primary_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, status_callback=cb)
+                            else:
+                                mode_flag = "combine" if comp_strategy == "גם מאמר חדש וגם מאגר הרקע המקורי" else "compare"
+                                result = pipeline.execute_comparison_qa(comp_query, primary_chunks, reference_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, mode=mode_flag, status_callback=cb)
+                            
+                            cb("Completed", "Comparison generation finished.", 100, state="completed")
+                            
+                            st.session_state.tab3_answer_state = {
+                                "warnings": result.get("warnings", []),
+                                "ans_data": result.get("final_parsed_answer", {}),
+                                "primary_chunks": primary_chunks,
+                                "reference_chunks": reference_chunks,
+                                "comp_strategy": comp_strategy
+                            }
+                            
+                            # Capture History
+                            new_entry = {
+                                "id": str(uuid.uuid4()),
+                                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                "main_article": selected_article,
+                                "strategy": comp_strategy,
+                                "question": comp_query,
+                                "answer_data": result.get("final_parsed_answer", {}),
+                                "is_deterministic": bool(deterministic_ans),
+                                "primary_chunks": primary_chunks,
+                                "reference_chunks": reference_chunks
+                            }
+                            st.session_state.tab3_history.insert(0, new_entry)
+                            save_history(st.session_state.tab3_history)
+                            
                         except Exception as e:
                             status_mgr.update("Failed", str(e), state="error")
                             st.error(f"שגיאת ביצוע: {str(e)}")
