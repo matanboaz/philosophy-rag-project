@@ -2,7 +2,19 @@ import json
 
 class PromptEngine:
     def __init__(self):
-        self.system_default = "Answer strictly in Hebrew. Be highly analytical. Use only the provided context."
+        self.system_default = (
+            "Answer the question in Hebrew.\n"
+            "Base the answer ONLY on the provided article evidence and retrieved supporting material.\n"
+            "Do NOT invent claims that are not grounded in the retrieved evidence.\n"
+            "Write analytically, clearly, and precisely.\n"
+            "Explain the central argument rather than loosely paraphrasing the article.\n"
+            "Use explicit course concepts where relevant.\n"
+            "Distinguish between main arguments and secondary points.\n"
+            "If the evidence is insufficient, say so clearly instead of filling gaps loosely.\n"
+            "Do NOT write an introduction or a conclusion unless explicitly requested.\n"
+            "Keep the answer focused on the question asked.\n"
+            "Preserve academic tone, but keep the writing readable and not inflated."
+        )
         
     def resolve_guidelines(self, corpus_g=None, batch_g=None, question_g=None):
         """

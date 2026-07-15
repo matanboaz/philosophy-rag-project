@@ -6,7 +6,8 @@ class BaseLLMClient:
     def __init__(self):
         self.model_name = "unknown"
         
-    def generate_json(self, prompt, schema_description=""):
+    def generate_json(self, prompt, schema_description="", status_callback=None):
+        """Generates JSON output matching the requested schema."""
         raise NotImplementedError
         
     def get_metadata(self):
@@ -21,7 +22,7 @@ class DictaLLMClient(BaseLLMClient):
         # rather than running a raw, slow HuggingFace pipeline in eager mode.
         self.api_base = os.getenv("LOCAL_INFERENCE_URL", "http://localhost:8000/v1")
         
-    def generate_json(self, prompt, schema_description=""):
+    def generate_json(self, prompt, schema_description="", status_callback=None):
         print(f"[INFO] Executing request via Local Inference Server at {self.api_base}...")
         
         full_prompt = f"Output strict JSON matching schema: {schema_description}\n\n{prompt}"
@@ -50,6 +51,8 @@ class DictaLLMClient(BaseLLMClient):
         max_retries = 2
         
         for attempt in range(max_retries):
+            if status_callback:
+                status_callback(f"Calling Local DICTA Server (Attempt {attempt+1}/{max_retries})", "Processing locally...", 50)
             try:
                 with urllib.request.urlopen(req, timeout=timeout_seconds) as response:
                     result = json.loads(response.read().decode('utf-8'))
@@ -192,7 +195,7 @@ class GeminiLLMClient(BaseLLMClient):
         except Exception as e:
             self.validation_error = f"Gemini startup validation failed: {str(e)}"
             
-    def generate_json(self, prompt, schema_description=""):
+    def generate_json(self, prompt, schema_description="", status_callback=None):
         if self.validation_error:
             return {"error": self.validation_error}
             
@@ -211,6 +214,8 @@ class GeminiLLMClient(BaseLLMClient):
         base_delay = 2.0
         
         for attempt in range(max_attempts):
+            if status_callback:
+                status_callback(f"Calling Gemini API (Attempt {attempt+1}/{max_attempts})", "Waiting for Google network...", 50)
             try:
                 response = client.models.generate_content(
                     model=self.model_name,
@@ -256,10 +261,10 @@ class GeminiLLMClient(BaseLLMClient):
 class OpenAILLMClient(BaseLLMClient):
     def __init__(self):
         super().__init__()
-        self.model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4o-mini")
+        self.model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4.1")
         self.api_key = os.getenv("OPENAI_API_KEY")
         
-    def generate_json(self, prompt, schema_description=""):
+    def generate_json(self, prompt, schema_description="", status_callback=None):
         if not self.api_key:
             return {"error": "Missing OPENAI_API_KEY in environment."}
             
@@ -267,30 +272,70 @@ class OpenAILLMClient(BaseLLMClient):
             from openai import OpenAI
             client = OpenAI(api_key=self.api_key)
             
-            system_instruction = "You are a helpful assistant. You must output valid JSON."
+            system_instruction = (
+                "You are acting as a careful philosophy professor or teaching assistant grading/answering an academic philosophy assignment. "
+                "You must output valid JSON. "
+                "Prioritize accuracy over fluency, avoid generic filler, and avoid repeating the text as a mechanical translation. "
+                "Highlight key distinctions and commitments in the argument, and give examples or clarifications only when they genuinely help explain the philosophy."
+            )
             full_prompt = f"Output JSON matching schema: {schema_description}\n\n{prompt}"
             
-            response = client.chat.completions.create(
-                model=self.model_name,
-                messages=[
-                    {"role": "system", "content": system_instruction},
-                    {"role": "user", "content": full_prompt}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.0
-            )
+            max_attempts = 4
+            last_error = None
             
-            return json.loads(response.choices[0].message.content)
-            
-        except ImportError:
-            return {"error": "OpenAI library not installed. Please install it using `pip install openai`."}
-        except Exception as e:
-            e_str = str(e).lower()
-            if "401" in e_str or "unauthorized" in e_str or "key" in e_str:
-                return {"error": f"שגיאת הרשאה מול OpenAI. יתכן שהטוקן שגוי (401). פירוט: {str(e)}"}
-            elif "429" in e_str or "quota" in e_str:
-                return {"error": f"חריגה ממגבלת הבקשות של OpenAI (429). אנא נסה שוב מאוחר יותר. פירוט: {str(e)}"}
-            return {"error": f"שגיאה בהפקת תשובה מ-OpenAI: {str(e)}"}
+            for attempt in range(max_attempts):
+                if status_callback:
+                    status_callback(f"Calling OpenAI API ({self.model_name}, Attempt {attempt+1}/{max_attempts})", "Waiting for remote generation...", 50)
+                
+                try:
+                    response = client.chat.completions.create(
+                        model=self.model_name,
+                        messages=[
+                            {"role": "system", "content": system_instruction},
+                            {"role": "user", "content": full_prompt}
+                        ],
+                        response_format={"type": "json_object"},
+                        temperature=0.0,
+                        max_tokens=4000
+                    )
+                    
+                    choice = response.choices[0]
+                    raw_content = choice.message.content
+                    
+                    if choice.finish_reason == "length":
+                        safe_ending = raw_content[-100:] if raw_content else "None"
+                        print(f"[ERROR] OpenAI response truncated due to length limits. Raw ending: {safe_ending}")
+                        last_error = "Response was truncated by API length limits before valid JSON could be formed."
+                        continue
+                        
+                    try:
+                        return json.loads(raw_content)
+                    except json.JSONDecodeError as jde:
+                        safe_raw = raw_content[:200] + "..." if raw_content and len(raw_content) > 200 else str(raw_content)
+                        print(f"[ERROR] Malformed JSON from OpenAI. Error: {str(jde)} | Raw Output: {safe_raw}")
+                        last_error = f"Malformed JSON output: {str(jde)}"
+                        full_prompt += f"\\n\\n[SYSTEM ERROR: Your previous response was invalid JSON. Error: {str(jde)}. You MUST output pure, well-formed JSON.]"
+                        continue
+                        
+                except Exception as e:
+                    e_str = str(e).lower()
+                    if "401" in e_str or "unauthorized" in e_str or "key" in e_str:
+                        return {"error": f"שגיאת הרשאה מול OpenAI. יתכן שהטוקן שגוי (401). פירוט: {str(e)}"}
+                    elif "429" in e_str or "quota" in e_str:
+                        return {"error": f"חריגה ממגבלת הבקשות של OpenAI (429). אנא נסה שוב מאוחר יותר. פירוט: {str(e)}"}
+                    elif "404" in e_str or "not found" in e_str or "model" in e_str:
+                        if self.model_name == "gpt-4.1":
+                            print(f"[INFO] Model {self.model_name} unavailable or invalid. Falling back to gpt-4o.")
+                            self.model_name = "gpt-4o"
+                            continue
+                        elif self.model_name == "gpt-4o":
+                            print(f"[INFO] Model {self.model_name} unavailable or invalid. Falling back to gpt-4o-mini.")
+                            self.model_name = "gpt-4o-mini"
+                            continue
+                    last_error = str(e)
+                    break
+                    
+            return {"error": f"שגיאה בהפקת תשובה מ-OpenAI לאחר {max_attempts} ניסיונות ({last_error})"}
 
 class LLMClientFactory:
     @staticmethod

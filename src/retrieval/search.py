@@ -61,7 +61,9 @@ class HybridSearcher:
                 rrf_scores[item_id] += 1.0 / (k + rank + 1)
         return rrf_scores
 
-    def search(self, query, top_k=5):
+    def search(self, query, top_k=5, status_callback=None):
+        if status_callback:
+            status_callback("Retrieving chunks", "Executing Lexical BM25 search...", 10)
         # 1. Lexical Search
         tokenized_query = query.lower().split()
         bm25_scores = self.bm25.get_scores(tokenized_query)
@@ -72,6 +74,9 @@ class HybridSearcher:
         ], key=lambda x: x[1], reverse=True)
         lexical_ids = [x[0] for x in lexical_ranked]
         
+        if status_callback:
+            status_callback("Retrieving chunks", "Executing Dense ChromaDB search...", 20)
+            
         # 2. Dense Search
         dense_results = self.collection.query(query_texts=[query], n_results=len(self.chunks))
         dense_ids = dense_results["ids"][0]
@@ -80,6 +85,8 @@ class HybridSearcher:
         dense_ranked = [(dense_ids[i], dense_distances[i]) for i in range(len(dense_ids))]
         
         # 3. Fusion (RRF)
+        if status_callback:
+            status_callback("Ranking / selecting evidence", "Fusing dense and lexical scores via RRF...", 30)
         fused_scores = self.rrf([lexical_ids, dense_ids])
         
         # 4. Final Ranking (Mocking Reranker Fallback - relying on RRF)

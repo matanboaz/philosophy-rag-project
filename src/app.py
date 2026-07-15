@@ -22,7 +22,52 @@ from src.retrieval.chunker import ChunkRegistryBuilder
 from src.generation.qa_pipeline import QAPipeline
 from src.ingestion.pdf_parser import PDFParser
 import time
-import time
+
+class TaskStatusManager:
+    """A reusable UI status manager for long-running pipelines in Streamlit."""
+    def __init__(self, container, initial_msg="Initializing..."):
+        self.container = container
+        self.status = self.container.status(initial_msg, expanded=True)
+        self.progress_bar = self.status.progress(0)
+        self.log_container = self.status.empty()
+        self.start_time = time.time()
+        self.logs = []
+        self.current_percent = 0
+        
+    def update(self, stage_name, detail="", percent=None, state="running"):
+        if percent is not None:
+            # Safely clamp between 0 and 100
+            self.current_percent = max(0, min(100, int(percent)))
+            
+        elapsed = time.time() - self.start_time
+        time_str = f"[{elapsed:.1f}s]"
+        
+        # Build Markdown log
+        log_msg = f"{time_str} **{stage_name}**"
+        if detail:
+            log_msg += f" - {detail}"
+            
+        # Avoid duplicating the exact same log repeatedly
+        if not self.logs or self.logs[-1] != log_msg:
+            self.logs.append(log_msg)
+            
+        visible_logs = "<br>".join(self.logs[-7:])
+        self.log_container.markdown(visible_logs, unsafe_allow_html=True)
+        
+        # Streamlit components
+        self.progress_bar.progress(self.current_percent)
+        
+        if state == "running":
+            self.status.update(label=f"⏳ {stage_name}...", state="running", expanded=True)
+        elif state == "completed":
+            self.progress_bar.progress(100)
+            self.status.update(label=f"✅ {stage_name} ({elapsed:.1f}s)", state="complete", expanded=False)
+        elif state == "error":
+            self.status.update(label=f"❌ שגיאה: {stage_name}", state="error", expanded=True)
+            
+    def get_callback(self):
+        """Returns a callback that can be passed deep into the pipeline."""
+        return lambda stage, detail, pct, state="running": self.update(stage, detail, pct, state)
 
 # --- HISTORY MANAGEMENT ---
 HISTORY_FILE = os.path.join(base_dir, "data", "qa_history.json")
@@ -314,7 +359,7 @@ def index_new_article(pdf_path, article_name):
     db_path = os.path.join(article_dir, "vector_store")
     
     parser = PDFParser(pdf_path)
-    pages_text = parser.extract_text(bidi_reorder=True)
+    pages_text = parser.extract_text(bidi_reorder=False)
     
     tokenizer = tiktoken.get_encoding("cl100k_base")
     text_splitter = RecursiveCharacterTextSplitter(
@@ -520,27 +565,33 @@ with tab2:
         elif backend_choice == "openai" and not openai_key:
             st.error("🚨 חסר מפתח API של OpenAI! אנא הזן אותו בסרגל הצד.")
         else:
-            with st.spinner("מאחזר ומסכם..."):
-                try:
-                    # Lazy load indices
-                    if not st.session_state.searcher:
-                        registry_path = os.path.join(base_dir, "data", "processed", "chunks_registry.jsonl")
-                        db_path = os.path.join(base_dir, "data", "vector_store")
-                        if os.path.exists(registry_path):
-                            st.session_state.searcher = HybridSearcher(registry_path, db_path)
-                        else:
-                            st.error("האינדקס לא נמצא. אנא בצע 'אישור ופיצול מאגר' תחילה.")
-                            st.stop()
-                    
-                    searcher = st.session_state.searcher
-                    chunks = searcher.search(query, top_k=3)
-                    
-                    pipeline = QAPipeline(backend_strategy=backend_choice)
-                    guidelines_map = {"corpus": corpus_guide, "batch": batch_guide, "question": q_guide}
-                    
-                    # Note: We use budget=budget only if > 0
-                    result = pipeline.execute_qa(query, chunks, guidelines_map, budget if budget > 0 else None)
-                    
+            status_mgr = TaskStatusManager(st.container(), initial_msg="Initializing request...")
+            cb = status_mgr.get_callback()
+            
+            try:
+                # Lazy load indices
+                if not st.session_state.searcher:
+                    cb("Initializing request", "Loading background corpus index...", 5)
+                    registry_path = os.path.join(base_dir, "data", "processed", "chunks_registry.jsonl")
+                    db_path = os.path.join(base_dir, "data", "vector_store")
+                    if os.path.exists(registry_path):
+                        st.session_state.searcher = HybridSearcher(registry_path, db_path)
+                    else:
+                        cb("Failed", "Index not found.", 0, state="error")
+                        st.error("האינדקס לא נמצא. אנא בצע 'אישור ופיצול מאגר' תחילה.")
+                        st.stop()
+                
+                searcher = st.session_state.searcher
+                chunks = searcher.search(query, top_k=3, status_callback=cb)
+                
+                pipeline = QAPipeline(backend_strategy=backend_choice)
+                guidelines_map = {"corpus": corpus_guide, "batch": batch_guide, "question": q_guide}
+                
+                # Note: We use budget=budget only if > 0
+                result = pipeline.execute_qa(query, chunks, guidelines_map, budget if budget > 0 else None, status_callback=cb)
+                
+                cb("Completed", "Answer generated and evidence ranked.", 100, state="completed")
+                
                     # Render Warnings
                     if result["warnings"]:
                         for w in result["warnings"]:
@@ -579,7 +630,8 @@ with tab2:
                             
                     st.download_button("הורד כקובץ JSON", data=json.dumps(result, ensure_ascii=False, indent=2), file_name="qa_result.json")
                 except Exception as e:
-                    st.error(f"שגיאת ביצוע: {str(e)}")
+                status_mgr.update("Failed", str(e), state="error")
+                st.error(f"שגיאת ביצוע: {str(e)}")
 
 # --- TAB 3: Batch / Comparison ---
 with tab3:
@@ -746,9 +798,10 @@ with tab3:
                                     st.error("🚨 שגיאה: מאגר הרקע המקורי לא נטען. חזור ללשונית 1 כדי להעלות ולאשר אותו, או בחר 'מאמר חדש בלבד'.")
                                     st.stop()
                                     
-                        with st.spinner("מאחזר ומשווה..."):
-                            try:
-                                primary_chunks = st.session_state.primary_searcher.search(comp_query, top_k=3)
+                        status_mgr = TaskStatusManager(st.container(), initial_msg="Initializing comparison request...")
+                        cb = status_mgr.get_callback()
+                        try:
+                            primary_chunks = st.session_state.primary_searcher.search(comp_query, top_k=3, status_callback=cb)
                                 
                                 # --- BUG 2 FIX: METADATA INJECTION FOR IDENTITY QUESTIONS ---
                                 deterministic_ans = None
@@ -771,7 +824,7 @@ with tab3:
                                         deterministic_ans = f"מחבר המאמר הוא {author_cue} ושם המאמר הוא {title_cue}."
                                         
                                 if comp_strategy in ["השוואה למאגר הרקע המקורי", "גם מאמר חדש וגם מאגר הרקע המקורי"]:
-                                    reference_chunks = st.session_state.searcher.search(comp_query, top_k=3)
+                                    reference_chunks = st.session_state.searcher.search(comp_query, top_k=3, status_callback=cb)
                                     
                                 pipeline = QAPipeline(backend_strategy=backend_choice)
                                 guidelines_map = {"corpus": corpus_guide, "batch": batch_guide, "question": comp_guide}
@@ -790,10 +843,12 @@ with tab3:
                                         }
                                     }
                                 elif comp_strategy == "מאמר חדש בלבד":
-                                    result = pipeline.execute_qa(comp_query, primary_chunks, guidelines_map, comp_budget if comp_budget > 0 else None)
+                                    result = pipeline.execute_qa(comp_query, primary_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, status_callback=cb)
                                 else:
                                     mode_flag = "combine" if comp_strategy == "גם מאמר חדש וגם מאגר הרקע המקורי" else "compare"
-                                    result = pipeline.execute_comparison_qa(comp_query, primary_chunks, reference_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, mode=mode_flag)
+                                    result = pipeline.execute_comparison_qa(comp_query, primary_chunks, reference_chunks, guidelines_map, comp_budget if comp_budget > 0 else None, mode=mode_flag, status_callback=cb)
+                                
+                                cb("Completed", "Comparison generation finished.", 100, state="completed")
                                 
                                 st.session_state.tab3_answer_state = {
                                     "warnings": result.get("warnings", []),
@@ -818,8 +873,9 @@ with tab3:
                                 st.session_state.tab3_history.insert(0, new_entry)
                                 save_history(st.session_state.tab3_history)
                                 
-                            except Exception as e:
-                                st.error(f"שגיאת ביצוע: {str(e)}")
+                        except Exception as e:
+                            status_mgr.update("Failed", str(e), state="error")
+                            st.error(f"שגיאת ביצוע: {str(e)}")
                                 
                 st.markdown("### 4. היסטוריית שאלות (History)")
                 if st.session_state.tab3_history:
@@ -917,20 +973,22 @@ with tab3:
                                         st.stop()
                                 reference_searcher = st.session_state.searcher
                                 
-                            with st.spinner("מעבד שאלות באצווה..."):
-                                try:
-                                    pipeline = QAPipeline(backend_strategy=backend_choice)
-                                    global_guidelines = {"corpus": corpus_guide, "batch": batch_guide}
-                                    
-                                    mode_flag = "combine" if comp_strategy == "גם מאמר חדש וגם מאגר הרקע המקורי" else "compare"
-                                    batch_results = pipeline.run_comparison_batch(
-                                        batch_json=batch_data,
-                                        primary_searcher=st.session_state.primary_searcher,
-                                        reference_searcher=reference_searcher,
-                                        global_guidelines=global_guidelines,
-                                        global_budget=25,
-                                        mode=mode_flag
-                                    )
+                            status_mgr = TaskStatusManager(st.container(), initial_msg="Initializing batch comparison...")
+                            cb = status_mgr.get_callback()
+                            try:
+                                pipeline = QAPipeline(backend_strategy=backend_choice)
+                                global_guidelines = {"corpus": corpus_guide, "batch": batch_guide}
+                                
+                                mode_flag = "combine" if comp_strategy == "גם מאמר חדש וגם מאגר הרקע המקורי" else "compare"
+                                batch_results = pipeline.run_comparison_batch(
+                                    batch_json=batch_data,
+                                    primary_searcher=st.session_state.primary_searcher,
+                                    reference_searcher=reference_searcher,
+                                    global_guidelines=global_guidelines,
+                                    global_budget=25,
+                                    mode=mode_flag,
+                                    status_callback=cb
+                                )
                                     
                                     out_dir = os.path.join(base_dir, "data", "processed", "generation_logs")
                                     os.makedirs(out_dir, exist_ok=True)
@@ -939,10 +997,12 @@ with tab3:
                                     with open(out_path, "w", encoding="utf-8") as f:
                                         json.dump(batch_results, f, ensure_ascii=False, indent=2)
                                         
+                                    cb("Completed", f"Batch finished. Saved to {out_path}", 100, state="completed")
                                     st.success(f"אצווה הושלמה! התוצאות נשמרו ב- {out_path}")
                                     st.download_button("הורד תוצאות אצווה (JSON)", data=json.dumps(batch_results, ensure_ascii=False, indent=2), file_name="batch_results.json")
                                     
                                 except Exception as e:
+                                    status_mgr.update("Failed", str(e), state="error")
                                     st.error(f"שגיאת אצווה: {str(e)}")
     else:
         st.info("לא נטענו מאמרים חדשים. העלה מאמר כדי להתחיל.")

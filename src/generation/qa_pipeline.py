@@ -33,7 +33,7 @@ class QAPipeline:
             
         return min_words, max_words
 
-    def _enforce_word_constraints(self, prompt, initial_json, schema_desc, min_words, max_words):
+    def _enforce_word_constraints(self, prompt, initial_json, schema_desc, min_words, max_words, status_callback=None):
         current_json = initial_json
         warnings = []
         max_retries = 2
@@ -50,7 +50,9 @@ class QAPipeline:
                 
             total_words = sum(self._count_hebrew_words(ans.get("answer", "")) for ans in current_json.get("answers", []))
             
-            # 10% buffer allowed for overage
+            if status_callback:
+                status_callback("Validating word count", f"Checking constraint {min_words}-{max_words} (actual: {total_words})", 70)
+                
             is_too_long = total_words > (max_words * 1.10)
             is_too_short = total_words < min_words
             
@@ -66,6 +68,9 @@ class QAPipeline:
                 
             warnings.append(f"Retry {attempt+1}: Generated {total_words} words. Target: {min_words}-{max_words}.")
             
+            if status_callback:
+                status_callback(f"Retrying generation (Attempt {attempt+1}/{max_retries})", f"Word count out of bounds ({total_words} words).", 75)
+            
             retry_instruction = f"Your previous answer had {total_words} words. You MUST rewrite it to be between {min_words} and {max_words} words."
             if is_too_short:
                 retry_instruction += f" Expand your analysis significantly to reach at least {min_words} words."
@@ -73,16 +78,19 @@ class QAPipeline:
                 retry_instruction += f" Be more concise. Do not exceed {max_words} words."
                 
             retry_prompt = f"{prompt}\n\n[STRICT SYSTEM REQUIREMENT: {retry_instruction}]"
-            current_json = self.llm.generate_json(retry_prompt, schema_description=schema_desc)
+            current_json = self.llm.generate_json(retry_prompt, schema_description=schema_desc, status_callback=status_callback)
             
         if budget_failed and "error" not in current_json:
             current_json = {"error": f"Word-count constraint could not be satisfied. Output was {total_words} words, required {min_words}-{max_words}."}
             
         return current_json, warnings
 
-    def execute_qa(self, query, chunks, guidelines=None, budget=None):
+    def execute_qa(self, query, chunks, guidelines=None, budget=None, status_callback=None):
         if guidelines is None: guidelines = {}
         
+        if status_callback:
+            status_callback("Building prompt", "Resolving UI guidelines and chunk contexts...", 40)
+            
         applied_map, guidelines_str = self.prompts.resolve_guidelines(
             corpus_g=guidelines.get("corpus"),
             batch_g=guidelines.get("batch"),
@@ -91,10 +99,10 @@ class QAPipeline:
         
         prompt = self.prompts.build_qa_prompt(query, chunks, guidelines_str, budget)
         schema_desc = '{"answers": [{"sub_question": "string", "answer": "string", "citations": [{"chunk_id": "string", "snippet": "string"}]}]}'
-        response_json = self.llm.generate_json(prompt, schema_description=schema_desc)
+        response_json = self.llm.generate_json(prompt, schema_description=schema_desc, status_callback=status_callback)
         
         min_words, max_words = self._parse_word_constraints(guidelines_str, budget)
-        final_answer, length_warnings = self._enforce_word_constraints(prompt, response_json, schema_desc, min_words, max_words)
+        final_answer, length_warnings = self._enforce_word_constraints(prompt, response_json, schema_desc, min_words, max_words, status_callback)
         
         warnings = length_warnings
         ans_str = str(final_answer)
@@ -112,8 +120,12 @@ class QAPipeline:
             "warnings": warnings
         }
 
-    def execute_comparison_qa(self, query, primary_chunks, reference_chunks, guidelines=None, budget=None, mode="compare"):
+    def execute_comparison_qa(self, query, primary_chunks, reference_chunks, guidelines=None, budget=None, mode="compare", status_callback=None):
         if guidelines is None: guidelines = {}
+        
+        if status_callback:
+            status_callback("Building prompt", f"Formatting multi-document context ({mode})...", 40)
+            
         applied_map, guidelines_str = self.prompts.resolve_guidelines(
             corpus_g=guidelines.get("corpus"), batch_g=guidelines.get("batch"), question_g=guidelines.get("question")
         )
@@ -123,10 +135,10 @@ class QAPipeline:
             prompt = self.prompts.build_comparison_prompt(query, primary_chunks, reference_chunks, guidelines_str, budget)
         
         schema_desc = '{"answers": [{"sub_question": "string", "answer": "string", "citations": [{"chunk_id": "string", "snippet": "string"}]}]}'
-        response_json = self.llm.generate_json(prompt, schema_description=schema_desc)
+        response_json = self.llm.generate_json(prompt, schema_description=schema_desc, status_callback=status_callback)
         
         min_words, max_words = self._parse_word_constraints(guidelines_str, budget)
-        final_answer, length_warnings = self._enforce_word_constraints(prompt, response_json, schema_desc, min_words, max_words)
+        final_answer, length_warnings = self._enforce_word_constraints(prompt, response_json, schema_desc, min_words, max_words, status_callback)
         
         warnings = length_warnings
         ans_str = str(final_answer)
@@ -145,9 +157,13 @@ class QAPipeline:
             "warnings": warnings
         }
 
-    def run_comparison_batch(self, batch_json, primary_searcher, reference_searcher, global_guidelines, global_budget, mode="compare", top_k=3):
+    def run_comparison_batch(self, batch_json, primary_searcher, reference_searcher, global_guidelines, global_budget, mode="compare", top_k=3, status_callback=None):
         results = []
         queries = batch_json.get("queries", [])
+        total_q = len(queries)
+        
+        if status_callback:
+            status_callback("Initializing request", f"Starting batch processing of {total_q} questions...", 5)
         
         for q_obj in queries:
             query_text = q_obj.get("query", "")
@@ -162,8 +178,12 @@ class QAPipeline:
                 q_guidelines["question"] = q_obj["guideline"]
                 
             # Retrieval
-            primary_chunks = primary_searcher.search(query_text, top_k=top_k) if primary_searcher else []
-            reference_chunks = reference_searcher.search(query_text, top_k=top_k) if reference_searcher else []
+            if status_callback:
+                progress = int(5 + (i / total_q) * 90)
+                status_callback(f"Retrieving chunks (Q{i+1}/{total_q})", f"Searching for evidence...", progress)
+                
+            primary_chunks = primary_searcher.search(query_text, top_k=top_k, status_callback=None) if primary_searcher else []
+            reference_chunks = reference_searcher.search(query_text, top_k=top_k, status_callback=None) if reference_searcher else []
             
             # Execute
             res = self.execute_comparison_qa(
@@ -172,7 +192,8 @@ class QAPipeline:
                 reference_chunks=reference_chunks,
                 guidelines=q_guidelines,
                 budget=q_budget,
-                mode=mode
+                mode=mode,
+                status_callback=None # Suppress inner logs for batch mode to prevent UI flicker
             )
             
             # Pack evidence chunks directly into result for batch output
