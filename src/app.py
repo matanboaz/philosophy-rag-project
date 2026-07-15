@@ -592,44 +592,44 @@ with tab2:
                 
                 cb("Completed", "Answer generated and evidence ranked.", 100, state="completed")
                 
-                    # Render Warnings
-                    if result["warnings"]:
-                        for w in result["warnings"]:
-                            if "budget_failed" in w:
-                                st.warning(f"⚠️ חריגה מתקציב המילים: {w}")
-                            elif "weak_evidence" in w:
-                                st.warning("⚠️ ראיות חלשות: המודל דיווח שאין מספיק מידע בטקסט.")
-                            else:
-                                st.warning(f"⚠️ אזהרה: {w}")
-                                
-                    # Render Answer
-                    st.markdown("### תשובה")
-                    ans_data = result["final_parsed_answer"]
-                    used_chunks = {}
-                    if "answers" in ans_data:
-                        for a in ans_data["answers"]:
-                            st.markdown(f"**{a.get('sub_question', 'Q')}:**")
-                            matched = render_answer_with_citations(a.get('answer', ''), a.get('citations', []), chunks)
-                            used_chunks.update(matched)
-                    elif "error" in ans_data:
-                        st.error(f"שגיאת יצירה: {ans_data['error']}")
-                        
-                    # Render Document Viewer Panels
-                    if used_chunks:
-                        st.markdown("### 📄 מסמכי מקור (Source Viewers)")
-                        for cid, chunk in used_chunks.items():
-                            title = chunk.get('article_title', 'Unknown')
-                            page = chunk.get('global_page_num', '?')
-                            st.markdown(f'<div id="viewer-{cid}" style="position:relative; top:-80px;"></div>', unsafe_allow_html=True)
-                            with st.expander(f"📖 הצג מסמך מקור: {title} (עמ' {page})"):
-                                render_pdf_viewer(chunk)
-                                
-                    # Render Raw Evidence Expandable
-                    with st.expander("הצג ראיות ומקורות"):
-                        render_evidence_blocks(chunks)
+                # Render Warnings
+                if result["warnings"]:
+                    for w in result["warnings"]:
+                        if "budget_failed" in w:
+                            st.warning(f"⚠️ חריגה מתקציב המילים: {w}")
+                        elif "weak_evidence" in w:
+                            st.warning("⚠️ ראיות חלשות: המודל דיווח שאין מספיק מידע בטקסט.")
+                        else:
+                            st.warning(f"⚠️ אזהרה: {w}")
                             
-                    st.download_button("הורד כקובץ JSON", data=json.dumps(result, ensure_ascii=False, indent=2), file_name="qa_result.json")
-                except Exception as e:
+                # Render Answer
+                st.markdown("### תשובה")
+                ans_data = result["final_parsed_answer"]
+                used_chunks = {}
+                if "answers" in ans_data:
+                    for a in ans_data["answers"]:
+                        st.markdown(f"**{a.get('sub_question', 'Q')}:**")
+                        matched = render_answer_with_citations(a.get('answer', ''), a.get('citations', []), chunks)
+                        used_chunks.update(matched)
+                elif "error" in ans_data:
+                    st.error(f"שגיאת יצירה: {ans_data['error']}")
+                    
+                # Render Document Viewer Panels
+                if used_chunks:
+                    st.markdown("### 📄 מסמכי מקור (Source Viewers)")
+                    for cid, chunk in used_chunks.items():
+                        title = chunk.get('article_title', 'Unknown')
+                        page = chunk.get('global_page_num', '?')
+                        st.markdown(f'<div id="viewer-{cid}" style="position:relative; top:-80px;"></div>', unsafe_allow_html=True)
+                        with st.expander(f"📖 הצג מסמך מקור: {title} (עמ' {page})"):
+                            render_pdf_viewer(chunk)
+                            
+                # Render Raw Evidence Expandable
+                with st.expander("הצג ראיות ומקורות"):
+                    render_evidence_blocks(chunks)
+                        
+                st.download_button("הורד כקובץ JSON", data=json.dumps(result, ensure_ascii=False, indent=2), file_name="qa_result.json")
+            except Exception as e:
                 status_mgr.update("Failed", str(e), state="error")
                 st.error(f"שגיאת ביצוע: {str(e)}")
 
