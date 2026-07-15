@@ -389,7 +389,7 @@ with st.sidebar:
         
     st.divider()
     st.markdown("### הנחיות (Guidelines)")
-    corpus_guide = st.text_area("הנחיות ברמת המאגר (Corpus)", "Answer in Hebrew. Be analytical.")
+    corpus_guide = st.text_area("הנחיות ברמת המאגר (Corpus)", "Answer in Hebrew. Be analytical. Write at least 600 words. Do not exceed 800 words.")
     batch_guide = st.text_area("הנחיות ברמת האצווה (Batch)", "")
     
 # --- Main App ---
