@@ -990,19 +990,19 @@ with tab3:
                                     status_callback=cb
                                 )
                                     
-                                    out_dir = os.path.join(base_dir, "data", "processed", "generation_logs")
-                                    os.makedirs(out_dir, exist_ok=True)
-                                    out_path = os.path.join(out_dir, f"batch_comparison_{int(time.time())}.json")
+                                out_dir = os.path.join(base_dir, "data", "processed", "generation_logs")
+                                os.makedirs(out_dir, exist_ok=True)
+                                out_path = os.path.join(out_dir, f"batch_comparison_{int(time.time())}.json")
+                                
+                                with open(out_path, "w", encoding="utf-8") as f:
+                                    json.dump(batch_results, f, ensure_ascii=False, indent=2)
                                     
-                                    with open(out_path, "w", encoding="utf-8") as f:
-                                        json.dump(batch_results, f, ensure_ascii=False, indent=2)
-                                        
-                                    cb("Completed", f"Batch finished. Saved to {out_path}", 100, state="completed")
-                                    st.success(f"אצווה הושלמה! התוצאות נשמרו ב- {out_path}")
-                                    st.download_button("הורד תוצאות אצווה (JSON)", data=json.dumps(batch_results, ensure_ascii=False, indent=2), file_name="batch_results.json")
-                                    
-                                except Exception as e:
-                                    status_mgr.update("Failed", str(e), state="error")
-                                    st.error(f"שגיאת אצווה: {str(e)}")
+                                cb("Completed", f"Batch finished. Saved to {out_path}", 100, state="completed")
+                                st.success(f"אצווה הושלמה! התוצאות נשמרו ב- {out_path}")
+                                st.download_button("הורד תוצאות אצווה (JSON)", data=json.dumps(batch_results, ensure_ascii=False, indent=2), file_name="batch_results.json")
+                                
+                            except Exception as e:
+                                status_mgr.update("Failed", str(e), state="error")
+                                st.error(f"שגיאת אצווה: {str(e)}")
     else:
         st.info("לא נטענו מאמרים חדשים. העלה מאמר כדי להתחיל.")
