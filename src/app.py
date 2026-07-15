@@ -95,6 +95,53 @@ def render_pdf_viewer(chunk):
     iframe_html = f'<iframe src="data:application/pdf;base64,{base64_pdf}#page={page_num}" width="100%" height="600px" type="application/pdf"></iframe>'
     st.markdown(iframe_html, unsafe_allow_html=True)
 
+def render_evidence_blocks(chunks):
+    """Renders evidence chunks with clarity, provenance, and semantic direction support."""
+    if not chunks:
+        st.write("לא נמצאו ראיות.")
+        return
+        
+    for c in chunks:
+        title = c.get('article_title', 'Unknown Title')
+        page = c.get('global_page_num', '?')
+        cid = c.get('chunk_id', 'Unknown ID')
+        
+        # Derive a short semantic reason
+        fused = c.get('fused_rrf_score', 0)
+        lexical = c.get('lexical_score', 0)
+        if fused > 0:
+            reason = f"High semantic and lexical match (Relevance Score: {fused:.2f})"
+        elif lexical > 0:
+            reason = f"Exact keyword match (BM25 Score: {lexical:.2f})"
+        else:
+            reason = "Semantic similarity match"
+            
+        st.markdown(f"**📄 {title} (Page {page})**")
+        st.caption(f"**Chunk ID:** `{cid}` | **Why relevant:** {reason}")
+        
+        safe_text = c.get('text', '').replace('\\n', '<br>')
+        
+        # dir="auto" handles RTL vs LTR automatically based on content
+        html_block = f'''
+        <div dir="auto" style="
+            text-align: start;
+            unicode-bidi: plaintext;
+            padding: 12px; 
+            border-left: 4px solid #475569; 
+            border-right: 4px solid #475569;
+            background-color: #1e293b; 
+            color: #f8fafc;
+            border-radius: 6px; 
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        ">
+        {safe_text}
+        </div>
+        '''
+        st.markdown(html_block, unsafe_allow_html=True)
+
 # --- Configuration & State Setup ---
 st.set_page_config(page_title="100 , לא פחות!", layout="wide")
 
@@ -389,7 +436,17 @@ with st.sidebar:
         
     st.divider()
     st.markdown("### הנחיות (Guidelines)")
-    corpus_guide = st.text_area("הנחיות ברמת המאגר (Corpus)", "Answer in Hebrew. Be analytical. Write at least 600 words. Do not exceed 800 words.")
+    corpus_guide = st.text_area(
+        "הנחיות ברמת המאגר (Corpus)", 
+        "Answer in Hebrew. Be analytical.\\n"
+        "- Write at least 500 words and do not exceed 800 words per question.\\n"
+        "- Do NOT write an introduction or a summary.\\n"
+        "- For questions 1-3: Describe the main argument clearly.\\n"
+        "- For question 4: Develop a personal view.\\n"
+        "- Maintain clarity and precision.\\n"
+        "- Make explicit use of course concepts.\\n"
+        "- Provide explicit citations and references for your claims."
+    )
     batch_guide = st.text_area("הנחיות ברמת האצווה (Batch)", "")
     
 # --- Main App ---
@@ -518,9 +575,7 @@ with tab2:
                                 
                     # Render Raw Evidence Expandable
                     with st.expander("הצג ראיות ומקורות"):
-                        for c in chunks:
-                            st.markdown(f"**[{c['article_title']}, p. {c['global_page_num']}]**")
-                            st.text(c['text'])
+                        render_evidence_blocks(chunks)
                             
                     st.download_button("הורד כקובץ JSON", data=json.dumps(result, ensure_ascii=False, indent=2), file_name="qa_result.json")
                 except Exception as e:
@@ -832,23 +887,11 @@ with tab3:
                                 render_pdf_viewer(chunk)
                         
                     with st.expander("🔍 ראיות מהמאמר החדש (מוצגות בשפת המקור)"):
-                        if primary_chunks:
-                            for c in primary_chunks:
-                                st.markdown(f"**[{c['article_title']}, p. {c['global_page_num']}]**")
-                                safe_text = c['text'].replace('\\n', '<br>')
-                                st.markdown(f'<div dir="rtl" style="text-align: right;">{safe_text}</div>', unsafe_allow_html=True)
-                        else:
-                            st.write("לא נמצאו ראיות.")
+                        render_evidence_blocks(primary_chunks)
                             
                     if comp_strategy in ["השוואה למאגר הרקע המקורי", "גם מאמר חדש וגם מאגר הרקע המקורי"]:
                         with st.expander("📚 ראיות ממאגר הרקע המקורי (מוצגות בשפת המקור)"):
-                            if reference_chunks:
-                                for c in reference_chunks:
-                                    st.markdown(f"**[{c['article_title']}, p. {c['global_page_num']}]**")
-                                    safe_text = c['text'].replace('\\n', '<br>')
-                                    st.markdown(f'<div dir="rtl" style="text-align: right;">{safe_text}</div>', unsafe_allow_html=True)
-                            else:
-                                st.write("לא נמצאו ראיות במאגר הרקע.")
+                            render_evidence_blocks(reference_chunks)
             
             elif exec_mode == "שאלות באצווה (JSON)":
                 batch_file = st.file_uploader("העלאת קובץ אצווה (JSON)", type=["json"], key="batch_file")
