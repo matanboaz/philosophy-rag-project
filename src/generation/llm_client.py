@@ -336,7 +336,9 @@ class OpenAILLMClient(BaseLLMClient):
                     break
                     
             return {"error": f"שגיאה בהפקת תשובה מ-OpenAI לאחר {max_attempts} ניסיונות ({last_error})"}
-
+            
+        except ImportError:
+            return {"error": "OpenAI library not installed. Please install it using `pip install openai`."}
 class LLMClientFactory:
     @staticmethod
     def get_client(strategy=None):
