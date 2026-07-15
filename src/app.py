@@ -130,7 +130,8 @@ def render_pdf_viewer(chunk):
     page_num = chunk.get("local_page_num", 1)
     
     if not pdf_path or not os.path.exists(pdf_path):
-        st.error("קובץ המקור לא נמצא.")
+        st.info("📄 מידע טקסטואלי בלבד: לא קיים קובץ מסמך זמין לתצוגה עבור מקטע זה.")
+        st.markdown(f"> {chunk.get('text', 'No text available.')}")
         return
         
     with open(pdf_path, "rb") as f:

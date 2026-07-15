@@ -36,10 +36,12 @@ class PromptEngine:
             
         return applied_map, instruction_string
 
-    def build_qa_prompt(self, query, chunks, guidelines_str, word_budget=None):
+    def build_qa_prompt(self, query, chunks, guidelines_str, min_words=0, max_words=999999):
         context_str = "\n".join([f"[CHUNK_ID: {c['chunk_id']} | SOURCE: {c['article_title']}, p. {c['global_page_num']}]\n{c['text']}" for c in chunks])
         
-        budget_str = f"\nYou MUST limit your answer to exactly {word_budget} words." if word_budget else ""
+        budget_str = ""
+        if min_words > 0 or max_words < 999999:
+            budget_str = f"\n[CRITICAL LENGTH CONSTRAINT]: You MUST write an answer that is strictly between {min_words} and {max_words} words long. Do NOT stop early. Expand your analysis deeply to ensure you meet the minimum word count without padding."
         
         prompt = f"""
 {guidelines_str}
@@ -70,11 +72,13 @@ Previous answer for reference:
 {original_answer}
 """
 
-    def build_comparison_prompt(self, query, primary_chunks, reference_chunks, guidelines_str, word_budget=None):
+    def build_comparison_prompt(self, query, primary_chunks, reference_chunks, guidelines_str, min_words=0, max_words=999999):
         primary_context = "\n".join([f"[CHUNK_ID: {c['chunk_id']} | SOURCE: {c['article_title']}, p. {c['global_page_num']}]\n{c['text']}" for c in primary_chunks])
         ref_context = "\n".join([f"[CHUNK_ID: {c['chunk_id']} | SOURCE: {c['article_title']}, p. {c['global_page_num']}]\n{c['text']}" for c in reference_chunks])
         
-        budget_str = f"\nYou MUST limit your answer to exactly {word_budget} words." if word_budget else ""
+        budget_str = ""
+        if min_words > 0 or max_words < 999999:
+            budget_str = f"\n[CRITICAL LENGTH CONSTRAINT]: You MUST write an answer that is strictly between {min_words} and {max_words} words long. Do NOT stop early. Expand your analysis deeply to ensure you meet the minimum word count without padding."
         
         prompt = f"""
 {guidelines_str}
@@ -99,11 +103,13 @@ You are comparing a newly uploaded article against the original reference corpus
 """
         return prompt
 
-    def build_combined_prompt(self, query, primary_chunks, reference_chunks, guidelines_str, word_budget=None):
+    def build_combined_prompt(self, query, primary_chunks, reference_chunks, guidelines_str, min_words=0, max_words=999999):
         primary_context = "\n".join([f"[CHUNK_ID: {c['chunk_id']} | SOURCE: {c['article_title']}, p. {c['global_page_num']}]\n{c['text']}" for c in primary_chunks])
         ref_context = "\n".join([f"[CHUNK_ID: {c['chunk_id']} | SOURCE: {c['article_title']}, p. {c['global_page_num']}]\n{c['text']}" for c in reference_chunks])
         
-        budget_str = f"\nYou MUST limit your answer to exactly {word_budget} words." if word_budget else ""
+        budget_str = ""
+        if min_words > 0 or max_words < 999999:
+            budget_str = f"\n[CRITICAL LENGTH CONSTRAINT]: You MUST write an answer that is strictly between {min_words} and {max_words} words long. Do NOT stop early. Expand your analysis deeply to ensure you meet the minimum word count without padding."
         
         prompt = f"""
 {guidelines_str}

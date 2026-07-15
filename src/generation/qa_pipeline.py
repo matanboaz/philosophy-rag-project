@@ -20,13 +20,20 @@ class QAPipeline:
         if not guidelines_str:
             return min_words, max_words
             
+        # Parse explicit ranges (e.g. 500-800 words, 500-800 מילים)
+        range_match = re.search(r'(\d+)\s*(?:-|to|עד)\s*(\d+)\s*(?:words?|מיל)', guidelines_str, re.IGNORECASE)
+        if range_match:
+            min_words = max(min_words, int(range_match.group(1)))
+            parsed_max = int(range_match.group(2))
+            max_words = min(max_words, parsed_max) if max_words != 999999 else parsed_max
+            
         # Parse Min
         min_match = re.search(r'(?:at least|minimum|min|no less than|>|>=|לפחות|מינימום|לא פחות מ|מעל)\s*(\d+)\s*(?:words?|מיל)', guidelines_str, re.IGNORECASE)
         if min_match: 
-            min_words = int(min_match.group(1))
+            min_words = max(min_words, int(min_match.group(1)))
             
         # Parse Max
-        max_match = re.search(r'(?:do not exceed|maximum|max|under|no more than|<|<=|up to|לכל היותר|מקסימום|עד|לא יותר מ|מתחת ל)\s*(\d+)\s*(?:words?|מיל)', guidelines_str, re.IGNORECASE)
+        max_match = re.search(r'(?:do not exceed|maximum|max|under|no more than|<|<=|up to|לכל היותר|מקסימום|לא יותר מ|מתחת ל)\s*(\d+)\s*(?:words?|מיל)', guidelines_str, re.IGNORECASE)
         if max_match: 
             parsed_max = int(max_match.group(1))
             max_words = min(max_words, parsed_max) if max_words != 999999 else parsed_max
@@ -97,11 +104,11 @@ class QAPipeline:
             question_g=guidelines.get("question")
         )
         
-        prompt = self.prompts.build_qa_prompt(query, chunks, guidelines_str, budget)
+        min_words, max_words = self._parse_word_constraints(guidelines_str, budget)
+        prompt = self.prompts.build_qa_prompt(query, chunks, guidelines_str, min_words, max_words)
         schema_desc = '{"answers": [{"sub_question": "string", "answer": "string", "citations": [{"chunk_id": "string", "snippet": "string"}]}]}'
         response_json = self.llm.generate_json(prompt, schema_description=schema_desc, status_callback=status_callback)
         
-        min_words, max_words = self._parse_word_constraints(guidelines_str, budget)
         final_answer, length_warnings = self._enforce_word_constraints(prompt, response_json, schema_desc, min_words, max_words, status_callback)
         
         warnings = length_warnings
@@ -129,15 +136,16 @@ class QAPipeline:
         applied_map, guidelines_str = self.prompts.resolve_guidelines(
             corpus_g=guidelines.get("corpus"), batch_g=guidelines.get("batch"), question_g=guidelines.get("question")
         )
+        min_words, max_words = self._parse_word_constraints(guidelines_str, budget)
+        
         if mode == "combine":
-            prompt = self.prompts.build_combined_prompt(query, primary_chunks, reference_chunks, guidelines_str, budget)
+            prompt = self.prompts.build_combined_prompt(query, primary_chunks, reference_chunks, guidelines_str, min_words, max_words)
         else:
-            prompt = self.prompts.build_comparison_prompt(query, primary_chunks, reference_chunks, guidelines_str, budget)
+            prompt = self.prompts.build_comparison_prompt(query, primary_chunks, reference_chunks, guidelines_str, min_words, max_words)
         
         schema_desc = '{"answers": [{"sub_question": "string", "answer": "string", "citations": [{"chunk_id": "string", "snippet": "string"}]}]}'
         response_json = self.llm.generate_json(prompt, schema_description=schema_desc, status_callback=status_callback)
         
-        min_words, max_words = self._parse_word_constraints(guidelines_str, budget)
         final_answer, length_warnings = self._enforce_word_constraints(prompt, response_json, schema_desc, min_words, max_words, status_callback)
         
         warnings = length_warnings
