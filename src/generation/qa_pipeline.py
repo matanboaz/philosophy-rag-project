@@ -69,7 +69,10 @@ class QAPipeline:
                 break
                 
             if attempt == max_retries:
-                warnings.append(f"word_count_failed: Generated {total_words} words. Target was {min_words}-{max_words}. Retries exhausted.")
+                if is_too_short:
+                    warnings.append(f"word_count_miss: The answer was generated successfully, but it contains {total_words} words and did not reach the requested minimum of {min_words} words.")
+                else:
+                    warnings.append(f"word_count_miss: The answer was generated successfully, but it contains {total_words} words and exceeded the requested maximum of {max_words} words.")
                 budget_failed = True
                 break
                 
@@ -86,9 +89,6 @@ class QAPipeline:
                 
             retry_prompt = f"{prompt}\n\n[STRICT SYSTEM REQUIREMENT: {retry_instruction}]"
             current_json = self.llm.generate_json(retry_prompt, schema_description=schema_desc, status_callback=status_callback)
-            
-        if budget_failed and "error" not in current_json:
-            current_json = {"error": f"Word-count constraint could not be satisfied. Output was {total_words} words, required {min_words}-{max_words}."}
             
         return current_json, warnings
 

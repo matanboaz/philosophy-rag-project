@@ -596,7 +596,9 @@ with tab2:
                 # Render Warnings
                 if result["warnings"]:
                     for w in result["warnings"]:
-                        if "budget_failed" in w:
+                        if "word_count_miss:" in w:
+                            st.warning(w.replace("word_count_miss:", "⚠️ Warning:"))
+                        elif "budget_failed" in w:
                             st.warning(f"⚠️ חריגה מתקציב המילים: {w}")
                         elif "weak_evidence" in w:
                             st.warning("⚠️ ראיות חלשות: המודל דיווח שאין מספיק מידע בטקסט.")
@@ -912,7 +914,9 @@ with tab3:
                     state = st.session_state.tab3_answer_state
                     if state["warnings"]:
                         for w in state["warnings"]:
-                            if "weak_evidence" in w:
+                            if "word_count_miss:" in w:
+                                st.warning(w.replace("word_count_miss:", "⚠️ Warning:"))
+                            elif "weak_evidence" in w:
                                 st.warning("⚠️ ראיות חלשות: חסר מידע באחד המקורות להשוואה.")
                             else:
                                 st.warning(f"⚠️ {w}")
